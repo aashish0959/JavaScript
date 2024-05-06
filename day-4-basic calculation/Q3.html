@@ -23,8 +23,12 @@
     let meters = document.getElementById("meters").value;
     let time = document.getElementById("time").value;
 
+ 
     let speed = meters / time
 
-    document.getElementById("ans").innerHTML = "The speed is  " + speed + " m/s";
+    if(speed){
+        document.getElementById("ans").innerHTML = "The speed is  " + speed + " m/s";
+    }
+    
 
 </script>
