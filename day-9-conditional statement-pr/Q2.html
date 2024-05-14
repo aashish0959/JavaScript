@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <br><br>
+   <center> <div>
+    <h1>price</h1>
+
+    <h2>enter the price</h2>
+    <input type="text" id="in1">
+
+    <h1 id="ans"></h1>
+</div></center>
+    
+</body>
+</html>
+<script>
+    let a = document.getElementById("in1").value
+
+    if(a === ""){
+        document.getElementById("ans").innerHTML = "enter the price"
+    }
+    else{
+        if(a >= 50 && a < 100 ){
+            document.getElementById("ans").innerHTML = " discount of 10"
+        }
+          else if( a >= 100){
+            document.getElementById("ans").innerHTML = " discount of 20"
+        }
+        else{
+            document.getElementById("ans").innerHTML = " discount of 0"
+        }
+    
+    }
+</script>
