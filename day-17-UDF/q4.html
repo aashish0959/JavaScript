@@ -1,5 +1,4 @@
-<!-- *Question 4:*
-Using closures find string is palindrome. -->
+<!-- 4. Write a function isPalindrome(num) that checks if a given number num is a palindrome. -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,29 +8,32 @@ Using closures find string is palindrome. -->
     <title>Document</title>
 </head>
 <body>
-    <h1>Enter The Name: </h1>
-    <input type="text" id="in1">    
+    
+    <h1>Enter Digit :</h1>
+    <input type="text" id="in1">
 
     <h1 id="ans"></h1>
+
 </body>
 </html>
 
 <script>
-    let name = document.getElementById("in1").value
+
+    let num = document.getElementById("in1").value
     let res1 = ""
     let res2 = ""
 
-    function pall(name){
-        for(let i =0; i<= name.length - 1; i++){
-            res1 += name[i]
+    function pall(num){
+        for(let i =0; i<= num.length - 1; i++){
+            res1 += num[i]
         }
-        for(let i = name.length-1; i>=0; i--){
-            res2 += name[i]
+        for(let i = num.length-1; i>=0; i--){
+            res2 += num[i]
         }
 
         
     function pall2(){
-        if(name === ""){
+        if(num === ""){
         document.getElementById("ans").innerHTML = ""
         }else{
             if(res1 === res2){
@@ -41,5 +43,6 @@ Using closures find string is palindrome. -->
         }
         }
     }pall2(res1,res2)
-    }pall(name)
+    }pall(num)
+
 </script>
