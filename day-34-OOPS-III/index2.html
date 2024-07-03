@@ -1,0 +1,34 @@
+<script>
+    class Animal {
+      makeSound() {
+        throw new Error("makeSound() is not implemented in the Animal class");
+      }
+    }
+
+    class Dog extends Animal {
+      makeSound() {
+        return "Woof!";
+      }
+    }
+
+    class Cat extends Animal {
+      makeSound() {
+        return "Meow!";
+      }
+    }
+
+    class Bird extends Animal {
+      makeSound() {
+        return "Chirp!";
+      }
+    }
+
+    // Example usage
+    const dog = new Dog();
+    const cat = new Cat();
+    const bird = new Bird();
+
+    console.log("Dog:", dog.makeSound());
+    console.log("Cat:", cat.makeSound());
+    console.log("Bird:", bird.makeSound());
+  </script>
