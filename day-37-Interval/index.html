@@ -55,52 +55,48 @@
 </html>
 
 <script>
+    let s1=11
 
-
-  let s1 = 11
-
+    document.querySelector(".s1").innerHTML = s1
+  
+    let stop = setInterval(()=>{
+  
+      s1++
+  
+      if(s1 === 12){
+  clearInterval(stop)
   document.querySelector(".s1").innerHTML = s1
-
-  let stop = setInterval(() => {
-
-    s1++
-
-    if (s1 === 12) {
-      clearInterval(stop)
-      document.querySelector(".s1").innerHTML = s1
-    }
-  }, 5000)
-
-  let s2 = 59
+      }
+    },10000)
+  
+    let s2=59
   document.querySelector(".s2").innerHTML = s2
-
-  let stop2 = setInterval(() => {
-
-    s2++
-
-    if (s2 === 60) {
-      clearInterval(stop2)
-      document.querySelector(".s2").innerHTML = 0 + "0"
-
-    }
-  }, 1000)
-
-
-  let s3 = 0
+  
+    let stop2 = setInterval(()=>{
+  
+      s2++
+  
+      if(s2 === 60){
+  clearInterval(stop2)
+  document.querySelector(".s2").innerHTML = 0+"0"
+  
+      }
+    },10000)
+  
+  
+    let s3 = 50
   document.querySelector(".s3").innerHTML = s3
-
-  let stop3 = setInterval(() => {
-    s3++
-    document.querySelector(".s3").innerHTML = s3
-
-    if (s3 === 60) {
+  
+    let stop3= setInterval(()=>{
+      s3++
+      document.querySelector(".s3").innerHTML = s3
+  
+    if(s3===60){
       clearInterval(stop3)
-      document.querySelector(".s3").innerHTML = 0 + "0"
+      document.querySelector(".s3").innerHTML = 0+"0"
+      document.querySelector("img").style.display="block"
     }
-
-  }, 100)
- 
-
-
+  
+    },1000)
 
 </script>
