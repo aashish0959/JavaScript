@@ -5,84 +5,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+        }
+
+        #main {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            justify-content: center;
+        }
+
+        .product {
+            border: 1px solid #ddd;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .product img {
+            max-width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 15px;
+            max-height: 200px;
+            object-fit: contain;
+        }
+
+        .product h3 {
+            font-size: 1.2em;
+            margin: 0 0 10px;
+            color: #333;
+        }
+
+        .product p {
+            font-size: 1em;
+            margin: 0 0 15px;
+            color: #555;
+        }
+
+        .product input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        .product button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin: 5px;
+            color: #fff;
+        }
+
+        .product button.edit {
+            background-color: #5bc0de;
+        }
+
+        .product button.update {
+            background-color: #5cb85c;
+        }
+    </style>
 </head>
-<style>
-    #main {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .product {
-        border: 1px solid #ddd;
-        padding: 10px;
-        width: 300px;
-        text-align: center;
-    }
-
-    .product img {
-        max-width: 100%;
-        height: auto;
-    }
-</style>
 
 <body>
-    <div id="main"></div>
+    <center>
+        <div id="main">
+            <div>
+                <input type="text" id="a1" placeholder="enter city name">
+            <button id="a2" onclick="serchbtn()">search</button>
+            </div>
+        </div>
+    </center>
 </body>
-
 </html>
 
-<script>
-    fetch('https://fakestoreapi.com/products')
-        .then((res) => res.json())
-        .then((json) => {
-            console.log(json);
-            fakestoreapi(json);
-            localStorage.setItem("keys", JSON.stringify(json))
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+ <script>
+    function serchbtn() {
+        let data = document.getElementById("a1").value
 
-    function fakestoreapi(json) {
-        json.forEach((el, index) => {
-            let div = document.createElement('div');
-            let heading = document.createElement('h3');
-            heading.innerHTML = el.title;
+        
+            fetch("https://api.weatherapi.com/v1/current.json?key=8bf3ecfb191c49a2ad392045243007&q=${data}")
+            .then((res) => {
+                return res.json()
+            }).then((json) => {
+                console.log(json)
+                displayData(json)
 
-            let img = document.createElement('img');
-            img.setAttribute("src", el.image);
-
-            let price = document.createElement('p');
-            price.innerHTML = "$" + el.price;
-            price.className = 'price';
-
-            let inputt = document.createElement("input");
-            inputt.value = el.price;
-            inputt.className = "inputt";
-
-            let edit = document.createElement('button');
-            edit.innerText = "edit";
-
-            let update = document.createElement('button');
-            update.innerText = "update";
-
-            div.className = 'product';
-
-            div.append(heading, img, price, inputt, edit, update);
-            document.getElementById("main").append(div);
-            inputt.value = "";
-
-            edit.addEventListener("click", function () {
-                inputt.value = el.price;
-            });
-
-            update.addEventListener("click", function () {
-                let newPrice = inputt.value;
-                price.innerHTML = "$" + newPrice;
-                json[index].price = newPrice;
-                localStorage.setItem("keys", JSON.stringify(json));
-            });
-        });
+            })
     }
+
+    function displayData(data) {
+
+        let div = document.createElement("div")
+        div.className = "div1"
+
+        let p = document.createElement("p")
+        p.innerHTML = data.location.name
+        p.className = "city"
+
+
+        let p1 = document.createElement("p")
+        p1.innerHTML = "Temperature :" + data.current.temp_c + "°C"
+        p1.className = "temp"
+
+
+        let p3 = document.createElement("p")
+        p3.innerHTML = "wind speed :" + data.current.wind_kph
+        p3.className = "wind"
+
+        let img1 = document.createElement("img")
+        img1.setAttribute("src", data.current.condition.icon)
+        img1.className = "img1"
+
+        let removebtn = document.createElement("button")
+        removebtn.className = "delete"
+        removebtn.textContent = "delete data"
+        removebtn.addEventListener("click", function () {
+            main.removeChild(div)
+        })
+
+        div.append(p, p1, p3, img1, removebtn)
+        document.getElementById("main").append(div)
+
+    }
+
+
 </script>
