@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Display</title>
+    <style>
+        * {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+        }
+
+        .div1 {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 250px;
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+
+        .div1:hover {
+            transform: translateY(-10px);
+        }
+
+        .text1 {
+            color: #044804;
+            font-size: 20px;
+            text-transform: uppercase;
+            margin: 10px 0;
+        }
+
+        .img {
+            height: 150px;
+            object-fit: cover;
+            margin: 10px 0;
+        }
+
+        .price {
+            color: #333;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .input, .input1 {
+            height: 30px;
+            width: calc(100% - 20px);
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            padding: 5px;
+        }
+
+        .button1, .button2 {
+            height: 35px;
+            width: 100px;
+            border-radius: 5px;
+            border: none;
+            color: white;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button1 {
+            background-color: red;
+        }
+
+        .button1:hover {
+            background-color: darkred;
+        }
+
+        .button2 {
+            background-color: #044804;
+        }
+
+        .button2:hover {
+            background-color: #033303;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="main"></div>
+
+    <script>
+        fetch("https://fakestoreapi.com/products")
+            .then((res) => res.json())
+            .then((json) => displayData(json));
+
+        function displayData(json) {
+            json.map((el) => {
+                let div = document.createElement("div");
+                div.setAttribute("class", "div1");
+
+                let text = document.createElement("h3");
+                text.innerHTML = el.category;
+                text.setAttribute("class", "text1");
+
+                let img = document.createElement("img");
+                img.setAttribute("src", el.image);
+                img.setAttribute("class", "img");
+
+                let price = document.createElement("p");
+                price.innerHTML = "₹" + el.price;
+                price.className = "price";
+
+                let input = document.createElement("input");
+                input.className = "input";
+                input.setAttribute("placeholder", "Enter Price to update");
+
+                    let input1 = document.createElement("input");
+                    input1.className = "input1";
+                    input1.setAttribute("placeholder", "Enter category to change");
+
+                let btn1 = document.createElement("button");
+                btn1.innerHTML = "Edit";
+                btn1.setAttribute("class", "button1");
+
+                let btn2 = document.createElement("button");
+                btn2.innerHTML = "Update";
+                btn2.setAttribute("class", "button2");
+
+                div.append(text, img, price, input, input1, btn1, btn2);
+                document.getElementById("main").append(div);
+
+                btn1.addEventListener("click", function () {
+                    input.value = el.price;
+                    input1.value = el.category;
+
+                    localStorage.setItem("Edit_value", JSON.stringify(el.price));
+                    localStorage.setItem("Category", JSON.stringify(el.category));
+                });
+
+                btn2.addEventListener("click", function () {
+                    let newPrice = input.value;
+                    let newCategory = input1.value;
+
+                    price.innerHTML = "₹" + newPrice;
+                    text.innerHTML = newCategory;
+
+                    localStorage.setItem("Updated_value", JSON.stringify(newPrice));
+                    localStorage.setItem("Category", JSON.stringify(newCategory));
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

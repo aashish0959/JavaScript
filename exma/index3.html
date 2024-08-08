@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 600px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input, select, button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .filter {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .filter label {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .filter select {
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        li strong {
+            color: #333;
+        }
+
+        li button {
+            background-color: #dc3545;
+            margin-left: 10px;
+        }
+
+        li button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Task Manager</h1>
+        <form id="task-form">
+            <input type="text" id="task-name" placeholder="Task Name" required>
+            <input type="text" id="task-desc" placeholder="Task Description">
+            <input type="date" id="task-due-date">
+            <select id="task-priority">
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+            </select>
+            <button type="submit">Add Task</button>
+        </form>
+        <div class="filter">
+            <label for="filter-priority">Filter by priority:</label>
+            <select id="filter-priority">
+                <option value="All">All</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+            </select>
+        </div>
+        <ul id="task-list"></ul>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const taskForm = document.getElementById('task-form');
+            const taskList = document.getElementById('task-list');
+            const filterPriority = document.getElementById('filter-priority');
+
+            taskForm.addEventListener('submit', addTask);
+            taskList.addEventListener('click', modifyTask);
+            filterPriority.addEventListener('change', filterTasks);
+
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+            function addTask(e) {
+                e.preventDefault();
+                const name = document.getElementById('task-name').value;
+                const desc = document.getElementById('task-desc').value;
+                const dueDate = document.getElementById('task-due-date').value;
+                const priority = document.getElementById('task-priority').value;
+
+                const task = { name, desc, dueDate, priority };
+                tasks.push(task);
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                displayTasks(tasks);
+                taskForm.reset();
+            }
+
+            function modifyTask(e) {
+                if (e.target.tagName === 'BUTTON') {
+                    const action = e.target.dataset.action;
+                    const index = e.target.dataset.index;
+                    if (action === 'edit') {
+                        editTask(index);
+                    } else if (action === 'delete') {
+                        deleteTask(index);
+                    }
+                }
+            }
+
+            function editTask(index) {
+                const task = tasks[index];
+                document.getElementById('task-name').value = task.name;
+                document.getElementById('task-desc').value = task.desc;
+                document.getElementById('task-due-date').value = task.dueDate;
+                document.getElementById('task-priority').value = task.priority;
+                tasks.splice(index, 1);
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                displayTasks(tasks);
+            }
+
+            function deleteTask(index) {
+                tasks.splice(index, 1);
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                displayTasks(tasks);
+            }
+
+            function filterTasks() {
+                const priority = filterPriority.value;
+                const filteredTasks = tasks.filter(task => priority === 'All' || task.priority === priority);
+                displayTasks(filteredTasks);
+            }
+
+            function displayTasks(tasks) {
+                taskList.innerHTML = '';
+                tasks.forEach((task, index) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <div>
+                            <strong>${task.name}</strong> - ${task.desc} (Due: ${task.dueDate}) [${task.priority}]
+                        </div>
+                        <div>
+                            <button data-action="edit" data-index="${index}">Edit</button>
+                            <button data-action="delete" data-index="${index}">Delete</button>
+                        </div>
+                    `;
+                    taskList.appendChild(li);
+                });
+            }
+
+            displayTasks(tasks);
+        });
+    </script>
+</body>
+</html>
